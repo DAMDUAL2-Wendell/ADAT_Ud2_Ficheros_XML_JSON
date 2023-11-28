@@ -52,8 +52,10 @@ class GestionXML {
         return doc;
     }
 
-    public static void generarXML() {
+    public static void generarXML(String rutaFichero) {
         Document doc = GestionXML.crearDocument();
+
+        String ruta = rutaFichero;
 
         doc.setXmlVersion("1.0");
 
@@ -146,7 +148,8 @@ class GestionXML {
         nombreDocumento.appendChild(textoNombreDocumento);
 
         Source source = new DOMSource(doc);
-        Result result = new StreamResult(new File("datosPersonales.xml"));
+
+        Result result = new StreamResult(new File(ruta));
         try {
             Transformer transformer = TransformerFactory.newInstance().newTransformer();
             try {
@@ -167,9 +170,11 @@ class GestionXML {
             DocumentBuilderFactory dbf = DocumentBuilderFactory.newInstance();
             DocumentBuilder db = dbf.newDocumentBuilder();
             Document doc = db.parse(arxXml);
+
             doc.getDocumentElement().normalize();
             System.out.println("Elemento raiz:" +
-            doc.getDocumentElement().getNodeName());
+                    doc.getDocumentElement().getNodeName());
+
             NodeList nodeList = doc.getElementsByTagName("usuario");
             for (int itr = 0; itr < nodeList.getLength(); itr++) {
                 Node node = nodeList.item(itr);
@@ -179,11 +184,15 @@ class GestionXML {
                     System.out.println("Usuario con id: " + eElement.getAttribute("id"));
                     System.out.println("NIF: " + eElement.getElementsByTagName("nif").item(0).getTextContent());
                     System.out.println("Nombre: " + eElement.getElementsByTagName("nombre").item(0).getTextContent());
-                    System.out.println("Apellidos: " + eElement.getElementsByTagName("apellidos").item(0).getTextContent());
-                    System.out.println("fechaNacimiento: " + eElement.getElementsByTagName("fechaNacimiento").item(0).getTextContent());
-                    System.out.println("Asignatura: " + eElement.getElementsByTagName("asignatura").item(0).getTextContent());
+                    System.out.println(
+                            "Apellidos: " + eElement.getElementsByTagName("apellidos").item(0).getTextContent());
+                    System.out.println("fechaNacimiento: "
+                            + eElement.getElementsByTagName("fechaNacimiento").item(0).getTextContent());
+                    System.out.println(
+                            "Asignatura: " + eElement.getElementsByTagName("asignatura").item(0).getTextContent());
                 }
             }
+
         } catch (Exception e) {
             e.printStackTrace();
         }
